@@ -85,4 +85,3 @@
 ### @SpringBootApplication
 
 - @componetScan과 @configuration이 포함되어있는 어노테이션.
-
