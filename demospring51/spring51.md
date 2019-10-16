@@ -248,8 +248,9 @@ com.donghwan.demospring51.Single@10ad20cb
 - ApplicationContext는 빈과 관련된 기능만 담당하는 것 이 아니다.
 - 프로파일이라는 기능도 있음.
 - 프로파일은 빈들의 묶음
-  - 언제? 개발환경마다 필요한 빈들이 다를 수 있다. 개발환경, 배포환경...이런식으로 다를 수 있으니까.
-
+  
+- 언제? 개발환경마다 필요한 빈들이 다를 수 있다. 개발환경, 배포환경...이런식으로 다를 수 있으니까.
+  
 - @Profile(...)
 
   - 어떤 환경일때 실행시켜준다는 어노테이션
@@ -281,3 +282,45 @@ com.donghwan.demospring51.Single@10ad20cb
 
 - hierarchical 계층적. 
 - 만약 프로퍼티가 겹친다면, source에 정의된 properties보다, VM에 정의된 것이 우선되어 나옴
+
+
+
+## 7. MessageSource
+
+- i18 기능을 제공하는 인터페이스
+
+```java
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:/messages");
+		messageSource.setDefaultEncoding("UTF-8");
+		messageSource.setCacheSeconds(3); //캐시하는 시간을 최대 3초까지만 하고 다시 읽도록
+		return messageSource;
+	}
+
+```
+
+- `ReloadableResourceBundleMessageSource` 사용했기에, 메세지가 출력되는 와중에도 바꿀 수 있어야함
+
+
+
+```java
+@Component
+public class AppRunner implements ApplicationRunner {
+
+	@Autowired
+	MessageSource messageSource;
+
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+
+		while (true) {
+			System.out.println(messageSource.getMessage("greeting", new String[] { "donghwan" }, Locale.KOREA));
+			System.out.println(messageSource.getMessage("greeting", new String[] { "donghwan" }, Locale.getDefault()));
+			Thread.sleep(1000l); //1초간격으로 찍히도록
+
+		}
+	}
+```
+
