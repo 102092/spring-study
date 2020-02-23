@@ -48,4 +48,6 @@ public class Event {
   public String getEmail() {
     return email;
   }
+
+
 }

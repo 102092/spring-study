@@ -102,3 +102,210 @@
 
 
 
+### 데이터 바인딩
+
+#### 데이터 바인딩 추상화 : PropertyEditor
+
+- 사용자가 입력할 값을, 동적으로 할당하는 것을 의미함.
+- 왜 바인딩?
+  - 입력값이 보통 `string` 
+  - 그런데 도메인 객체는 숫자로 혹은 boolean등등 변환이 필요한 경우가 있기 때문에.
+  - 이런 기능을 하는 것을 데이터 바인딩이라 하고 함.
+- 스프링에서는 DataBinder Interface가 있음.
+
+- 웹 MVC에서 주로 사용.
+
+- setValue, getValue
+  - 에서 공유하고 있는 Value는 공유 한다.
+  - 즉 스레드 세이프 하지 않음.
+  - 즉 이 클래스를 Bean으로 등록해서 쓰면 안된다.
+  - PropertyEditor는 **절대로** bean으로 등록하면 안됨.
+
+
+
+#### 데이터 바인딩 추상화 : Convertor, Formatter
+
+- PropertyEditor 대신에 사용할 수 있는 코드
+
+  ```java
+  import org.springframework.core.convert.converter.Converter;
+  
+  public class EventConverter {
+  
+    public static class StringToEventConverter implements Converter<String, Event> {
+  
+      @Override
+      public Event convert(String s) {
+        return new Event(Integer.parseInt(s));
+      }
+    }
+  
+    public static class EventToStringConverter implements Converter<Event, String> {
+  
+      @Override
+      public String convert(Event event) {
+        return event.getId().toString();
+      }
+    }
+  
+  }
+  ```
+
+- 상태정보가 없기에, bean으로 등록해서 사용해도 상관없음.
+
+- bean으로 등록하는 것이 아닌, Registry를 통해서 관리해주는 방법도 있음.
+
+- primitive type이면 기본적인 것들은 converter해줌
+
+- i18n , 메세지 다국화.
+
+
+
+- Formatter
+
+  ```java
+  package me.donghwan.demospringioc.databind;
+  
+  import java.text.ParseException;
+  import java.util.Locale;
+  import org.springframework.format.Formatter;
+  
+  //thread safe
+  public class EventFormatter implements Formatter<Event> {
+    
+    @Override
+    public Event parse(String s, Locale locale) throws ParseException {
+      return new Event(Integer.parseInt(s));
+    }
+  
+    @Override
+    public String print(Event event, Locale locale) {
+      return event.getId().toString();
+    }
+  }
+  ```
+
+  - bean으로 등록해도 됨. 왜? thread safe해서
+  - formatter를 관리하는 Registerd에 등록해줘도 되구.
+
+- Conversion Service
+  - 인터페이스
+  - 이를 통해 converter, formatter들은 thread safe 하게 이용할 수 있음.
+
+
+
+## SpEL
+
+- Sping Expression Language
+
+  - Jsp에서 사용하는 expression language 를 사용하기 위해 
+
+  ```jsp
+  <C:....>
+  </C:....>
+  ```
+
+- Spring Security 뿐만 아니라 여러 많은 Spring 에서 사용됨.
+
+- 가장 간단한 예제
+
+  ```java
+  import org.springframework.beans.factory.annotation.Value;
+  import org.springframework.boot.ApplicationArguments;
+  import org.springframework.boot.ApplicationRunner;
+  import org.springframework.stereotype.Component;
+  
+  @Component
+  public class AppRunner implements ApplicationRunner {
+  
+    @Value("#{1 + 1}") //spel 표현식
+    int value;
+  
+    @Value("#{'hello' + ' world'}")
+    String greeting;
+  
+    @Value("#{1 eq 1}")
+    boolean trueOrFalse;
+    
+    @Value("hello")
+    String hello;
+    
+    @Value("${my.value}") //application.properties 에 있는 값을 주입받는 연산자
+    int myValue;
+  
+  
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+      System.out.println("================");
+      System.out.println(value); //2
+      System.out.println(greeting); //hello world
+      System.out.println(trueOrFalse); // true
+      System.out.println(hello); //hello
+    }
+  }
+  ```
+
+  - Springboot가 실행될 때, 아래 내용이 등록되어서 실행됨.
+  - 표현식 : #{"....."}
+  - 프로퍼티 : ${"......"}
+  - 주의할점
+    - 표현식 안에서는 프로퍼티 사용 가능
+    - 그렇지만 프로퍼티 내부에서는 표현식 사용불가.
+
+- SpEL reference를 한번 훝어보자.
+- 장점 : 메서드를 호출 하는 기능이 있음.
+  - 무슨말?
+- 어디서 쓰이고 있는가?
+  1. @Value
+  2. @ConditionalOnExpression
+     - 선택적으로 bean을 등록, 혹은 data를 읽어 들일 때 사용하는 어노테이션.
+  3. Spring Data @Query
+  4. Thymeleaf에서도 쓸 수 있어
+- 문자열에 # 형태 가 붙었으면, Spring Expression이구나라고 이해하면 됨.
+
+
+
+### AOP
+
+#### AOP 개념
+
+- 가장 간단하게, 흩어진 aspect를 module화 할 수 있는 프로그래밍 **기법** 
+  - OOP도 기법임.
+
+- 중복된 코드, 부분을 aspect를 통해서 하나로 모은다.
+- 해야할 일과, 그 일을 어디에 전송해야하는 지를 묶어서 module화 하는 것을 AOP임.
+- Aspect는 하나의 모듈을 일컫는 말.
+  - 이 모듈안에 advice와, pointcut이 들어감
+  - advice는 해야할 일들
+  - pointCut은 어디에 적용해야하는지를 기억함.
+    - 합류 지점.
+    - A classs에 example method를 실행할 때 합류해라 라고 알려주는 것.
+  - joinPoint?
+    - 메서드 실행 시점에서 사용.
+    - 메서드를 실행할 때, 이 advice를 끼어들어라고 말하려 할 때, 그 끼어드는 시점을 이야기함.
+  - target 적용이 되는 대상
+- joinCut vs pointCut
+- AOP 적용 방법
+  1. 컴파일 시에
+     - class 파일이 만들어졌을 때 무언가 바꿔서 컴파일을 하게 만들고.
+     - *컴파일을 다시해야함.*
+  2. 로딩 시에
+     - 클래스를 로딩하는 시점에 
+     - byteCode는 그대로 이지만, JVM에 올라갔을 때는 무언가 끼어 넣어서 실행됨.
+     - *로딩 시점에 약간의 부하가 생김.*
+     - *로드 타임 위버 설정을 해줘야함*
+  3. 런타임 시에
+     - A 라는 bean을 만들 때, 
+     - A 라는 타입의 proxy bean을 만들어서
+     - proxy bean이 실제 A가 가지고 있는 foo라는 메서드가 실행하기 직전에, 원하는 메서드를 실행시키도록 하고
+     - 그 다음에 나머지가 실행됨.
+     - 주로 스프링에서 사용되는 방법
+     - bean을 만드는 시에는 약간의 부하
+     - 그렇지만 요청이 들어올 때마다 부하가 걸리는 것이 아님. == 로딩시와 부하가 비슷할듯.
+     - 그렇지만 아무런 설정을 하지 않아도 됨.
+     - 문법이 쉬움! --> 별도의 AOP용 공부를 많이할 필요가 없음.
+
+- AspectJ
+  - 자유도 높음
+  - 반면 Spring AOP는 제한되어있음.
+
