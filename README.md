@@ -306,6 +306,151 @@
      - 문법이 쉬움! --> 별도의 AOP용 공부를 많이할 필요가 없음.
 
 - AspectJ
+
   - 자유도 높음
   - 반면 Spring AOP는 제한되어있음.
 
+  
+
+#### 프록시 기반 AOP
+
+- 스프링 Bean에만 AOP를 적용시킬수 있음.
+
+- `@Primary`
+
+  - 같은 타입의 빈이 여러가지 있을 때, 그 중 하나를 선택하는 어노테이션
+
+- Spring boot , Web을 실행시키지 않고 app만 실행시키는 방법
+
+  ```java
+  import org.springframework.boot.SpringApplication;
+  import org.springframework.boot.WebApplicationType;
+  import org.springframework.boot.autoconfigure.SpringBootApplication;
+  
+  @SpringBootApplication
+  public class DemoApplication {
+  
+    public static void main(String[] args) {
+      SpringApplication app = new SpringApplication(DemoApplication.class);
+      app.setWebApplicationType(WebApplicationType.NONE);
+      app.run(args);
+    }
+  
+  }
+  ```
+
+- 프록시를 클래스로 만들어서(Proxy-pattern), 사용하는 방법도 있지만 클래스를 새로 만들어야하고 (자원 소모), 이 클래스를 구성하는 데도 어느정도의 시간이 소요됨.
+- 그래서 스프링 AOP가 등장
+
+- AbstractAutoProxyCreator 는 BeanPostProcessor의 구현체
+  - 토비의 스프링 3에도 나옴. 이 책 참조.
+
+
+
+#### @AOP
+
+- advice, poinCut 2가지를 정의해야함
+
+  ```java
+  import org.aspectj.lang.ProceedingJoinPoint;
+  import org.aspectj.lang.annotation.Around;
+  import org.aspectj.lang.annotation.Aspect;
+  import org.springframework.stereotype.Component;
+  
+  @Component
+  @Aspect
+  public class PerfAspect {
+  
+   @Around("execution(* com.demospringspel..*.EventService.*(..))") 	     //@Around 의 value 가 pointCut
+    public Object logPerf(ProceedingJoinPoint pjp) throws Throwable {//이부분이 advice
+      long begin = System.currentTimeMillis();
+      Object retVal = pjp.proceed();
+      System.out.println(System.currentTimeMillis() - begin);
+      return retVal;
+    }
+  }
+  
+  ```
+
+  `@Around("execution(* com.demospringspel..*.EventService.*(..))")`
+
+  - PointCut 표현식.
+
+- Annotation 클래스
+
+  ```java
+  package com.demospringspel.demo;
+  
+  import java.lang.annotation.Retention;
+  import java.lang.annotation.RetentionPolicy;
+  
+  @Retention(RetentionPolicy.CLASS) // 이 annotation class를 class 파일 까지 유지하겠다라는 의미
+  public @interface PerfLogging {
+  
+  }
+  
+  ```
+
+  - 컴파일해도 이 annotation 정보가 남아 있음.
+  - 기본 값이 `CLASS`
+  - `RetentionPolicy.SOURCE` 면 컴파일 하면 사라짐. 
+
+  ```java
+  import org.aspectj.lang.ProceedingJoinPoint;
+  import org.aspectj.lang.annotation.Around;
+  import org.aspectj.lang.annotation.Aspect;
+  import org.springframework.stereotype.Component;
+  
+  @Component
+  @Aspect
+  public class PerfAspect {
+  
+    @Around("@annotation(PerfLogging)")
+    public Object logPerf(ProceedingJoinPoint pjp) throws Throwable {
+      long begin = System.currentTimeMillis();
+      Object retVal = pjp.proceed();
+      System.out.println(System.currentTimeMillis() - begin);
+      return retVal;
+    }
+  }
+  ```
+
+  - @PerfLogging 이 달려있는 곳에, 아래 코드를 적용해라라는 의미.
+  - 좀 더 편하게 Aspect를 적용시킬 수 있음.
+
+- bean을 통해 적용
+
+  ```java
+  import org.aspectj.lang.ProceedingJoinPoint;
+  import org.aspectj.lang.annotation.Around;
+  import org.aspectj.lang.annotation.Aspect;
+  import org.springframework.stereotype.Component;
+  
+  @Component
+  @Aspect
+  public class PerfAspect {
+  
+    @Around("bean(simpleEventService)")
+    public Object logPerf(ProceedingJoinPoint pjp) throws Throwable {
+      long begin = System.currentTimeMillis();
+      Object retVal = pjp.proceed();
+      System.out.println(System.currentTimeMillis() - begin);
+      return retVal;
+    }
+  }
+  
+  ```
+
+  
+
+- @Before
+
+  ```java
+    @Before("bean(simpleEventService)")
+    public void hello() {
+      System.out.println("hello");
+    }
+  }
+  ```
+
+  - bean simpleEventServie 각각 method 이전에 아래 코드가 실행됨.
