@@ -11,16 +11,16 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 @PropertySource("classpath:/app.properties")
 public class Demospring51Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Demospring51Application.class, args);
-	}
-	
-	@Bean
-	public MessageSource messageSource() {
-		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("classpath:/messages");
-		messageSource.setDefaultEncoding("UTF-8");
-		messageSource.setCacheSeconds(3);
-		return messageSource;
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(Demospring51Application.class, args);
+  }
+
+  @Bean
+  public MessageSource messageSource() {
+    ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+    messageSource.setBasename("classpath:/messages");
+    messageSource.setDefaultEncoding("UTF-8");
+    messageSource.setCacheSeconds(3);
+    return messageSource;
+  }
 }

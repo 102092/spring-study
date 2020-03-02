@@ -1,10 +1,10 @@
-package com.eastlight.springbootedu;
+package com.sbedu.demo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringBootEduApplicationTests {
+class DemoApplicationTests {
 
   @Test
   void contextLoads() {

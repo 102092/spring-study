@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class EventService {
 
   @NonNull
-  public String createEvent(@NonNull String name){
+  public String createEvent(@NonNull String name) {
     return "hello " + name;
   }
 }

@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AnotherHandler {
 
-	@EventListener
-	@Async
-	public void handle(MyEvent myEvent) {
-		System.out.println(Thread.currentThread().toString());
-		System.out.println("Another " + myEvent.getData());
-	}
+  @EventListener
+  @Async
+  public void handle(MyEvent myEvent) {
+    System.out.println(Thread.currentThread().toString());
+    System.out.println("Another " + myEvent.getData());
+  }
 }

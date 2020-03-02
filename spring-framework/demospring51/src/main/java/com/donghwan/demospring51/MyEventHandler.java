@@ -7,31 +7,31 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyEventHandler{
+public class MyEventHandler {
 
-	@EventListener
-	@Async
-	public void onApplicationEvent(MyEvent event) {
-		System.out.println(Thread.currentThread().toString());
-		System.out.println("이벤트를 받았다. 데이터는 "+ event.getData());
-		
-	}
+  @EventListener
+  @Async
+  public void onApplicationEvent(MyEvent event) {
+    System.out.println(Thread.currentThread().toString());
+    System.out.println("이벤트를 받았다. 데이터는 " + event.getData());
 
-	@EventListener
-	@Async
-	public void onApplicationEvent(ContextRefreshedEvent event) {
-		System.out.println(Thread.currentThread().toString());
-		System.out.println("ContextRefreshedEvent");
-		
-	}
-	
-	@EventListener
-	@Async
-	public void onApplicationEvent(ContextClosedEvent event) {
-		System.out.println(Thread.currentThread().toString());
-		System.out.println("ContextClosedEvent");
-		
-	}
+  }
+
+  @EventListener
+  @Async
+  public void onApplicationEvent(ContextRefreshedEvent event) {
+    System.out.println(Thread.currentThread().toString());
+    System.out.println("ContextRefreshedEvent");
+
+  }
+
+  @EventListener
+  @Async
+  public void onApplicationEvent(ContextClosedEvent event) {
+    System.out.println(Thread.currentThread().toString());
+    System.out.println("ContextClosedEvent");
+
+  }
 
 
 }

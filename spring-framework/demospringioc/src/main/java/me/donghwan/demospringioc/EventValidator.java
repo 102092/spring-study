@@ -13,7 +13,8 @@ public class EventValidator implements Validator {
 
   @Override
   public void validate(Object o, Errors errors) {
-    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "notEmpty","Empty title is now allowed");
+    ValidationUtils
+        .rejectIfEmptyOrWhitespace(errors, "title", "notEmpty", "Empty title is now allowed");
 
   }
 }

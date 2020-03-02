@@ -6,7 +6,7 @@ import org.springframework.format.Formatter;
 
 //thread safe
 public class EventFormatter implements Formatter<Event> {
-  
+
   @Override
   public Event parse(String s, Locale locale) throws ParseException {
     return new Event(Integer.parseInt(s));
