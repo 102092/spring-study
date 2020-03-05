@@ -55,3 +55,26 @@
   - bean을 등록하는 java 설정 파일
 
 - annotation 위치는 상관 없음.
+
+
+
+##### 자동 설정 만들기 1부,2부
+
+- 프로젝트를 명명하는 약속도 있고.
+- META-INF
+  - spring.factories
+- Autoconfiguration 
+  - 다른 프로젝트에서 생성한 빈? 을 가져와서 쓸 수 있게 해줌.
+
+- AutoConfiguration으로 주입한 빈을 같은 이름으로 현재 프로젝트에서 재설정할 수 없음.
+  - 해결 : application.properties에서 `spring.main.allow-bean-definition-overriding=true` 설정을 통해 main에서 override 하게 했음.
+  - 오류 없이 실행은 되지만, 내가 설정한 빈이 우선시 되지 않음.
+  - 즉 이미 주입된 bean 우선됨.
+- @ConditionalOnMissingBean
+  - 이 annotation은, 아래 작성된 타입의 bean이 없으면 이 bean을 등록해라.
+  - 즉 이 bean 등록이 후순위로 밀리는 효과?
+  - 이러한 방법이 커스터마이즈 하는 기본적인 방법.
+
+- 주입된 빈에서 일부만 바꾸고 싶으면?
+  - @EnableConfigurationProperties 을 사용한다.
+  - 빈을 주입받지만, 해당 속성들을 해당 프로젝트에서 properties에서 정의한 내용으로 대체하는 것.
