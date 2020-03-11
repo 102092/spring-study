@@ -78,3 +78,79 @@
 - 주입된 빈에서 일부만 바꾸고 싶으면?
   - @EnableConfigurationProperties 을 사용한다.
   - 빈을 주입받지만, 해당 속성들을 해당 프로젝트에서 properties에서 정의한 내용으로 대체하는 것.
+
+
+
+##### 내장 웹 서버 이해
+
+- 스프링 부트는 웹 서버가 아님.
+
+- 서버는 톰켓, 네티 undertow등
+
+- 스프링부트 없이, 내장 tomcat server 띄워보기
+
+  ```java
+  package com.sbedu.demo;
+  
+  import java.io.IOException;
+  import java.io.PrintWriter;
+  import javax.servlet.ServletException;
+  import javax.servlet.http.HttpServlet;
+  import javax.servlet.http.HttpServletRequest;
+  import javax.servlet.http.HttpServletResponse;
+  import org.apache.catalina.Context;
+  import org.apache.catalina.LifecycleException;
+  import org.apache.catalina.startup.Tomcat;
+  
+  public class DemoApplication {
+  
+    public static void main(String[] args) throws LifecycleException {
+      Tomcat tomcat = new Tomcat();
+      tomcat.setPort(8080);
+  
+      Context context = tomcat.addContext("/", "/");
+  
+      HttpServlet servlet = new HttpServlet() {
+        @Override
+        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+          PrintWriter writer = resp.getWriter();
+          writer.println("<html><head><title>");
+          writer.println("Hello, Tomcat");
+          writer.println("</title></head>");
+          writer.println("<body><h1>Hello, World!</h1></body>");
+          writer.println("</html>");
+        }
+      };
+      String servletName = "helloServlet";
+      tomcat.addServlet("/", servletName, servlet);
+      context.addServletMappingDecoded("/hello", servletName);
+  
+      tomcat.start();
+      tomcat.getServer().await();
+    }
+  }
+  ```
+
+  - Springboot 2.0.3 version에서 실행 확인
+
+- Spring boot 는 자동 설정으로, 내장 서블릿 컨테이너가 만들어 지는 것.
+
+- 서블릿 컨테이너는 설정은 변경 가능하나, dispatcher servlet은 항상 만들어져서 서블릿 컨테이너에 등록됨.
+
+  위의 내장 톰켓을 만들던 코드는, 스프링부트에서 두가지로 나뉘어서 실행되는데,
+
+  1. dispatcher servlet을 생성하고,
+  2. servlet container를 생성하여, 여기에 dispatcher servlet이 등록된다.
+
+
+
+##### 내장 웹서버 응용 1,2부
+
+- 왜 tomcat 대신 undertow?
+
+- 스프링 부트는 기본적으로 의존성에 web이 있으면, 웹 어플리케이션 타입으로 실행시키려고 함.
+  - properties 에서 `spring.main.web-application-type=none` 설정을 통해 웹 어플리케이션 서버 타입이 아닌 것으로 실행시킬 수 있음.
+
+- 또한, `server.port = ...` 으로 실행포트 변경시킬 수 도 있음.
+  - 만약 value 값으로 0을 준다면, 랜덤으로 실행할 수 있는 포트를 찾아서 web app을 실행시킴.
