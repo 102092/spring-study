@@ -148,9 +148,50 @@
 ##### 내장 웹서버 응용 1,2부
 
 - 왜 tomcat 대신 undertow?
-
 - 스프링 부트는 기본적으로 의존성에 web이 있으면, 웹 어플리케이션 타입으로 실행시키려고 함.
   - properties 에서 `spring.main.web-application-type=none` 설정을 통해 웹 어플리케이션 서버 타입이 아닌 것으로 실행시킬 수 있음.
-
 - 또한, `server.port = ...` 으로 실행포트 변경시킬 수 도 있음.
   - 만약 value 값으로 0을 준다면, 랜덤으로 실행할 수 있는 포트를 찾아서 web app을 실행시킴.
+- key store 만들기
+  - https://gist.github.com/keesun/f93f0b83d7232137283450e08a53c4fd
+- 이를 `application.properties`에 등록하고 서버를 실행시키면, 요청을 `https://` 로만 받음.
+- 공식적으로 발급된 인증서가 아니기에, 브라우저에서 경고를 줌.
+
+
+
+##### tomcat HTTP2
+
+- JDK9, Tocamt 9
+- exclude undertow..
+- project structure, model dependency 변경
+
+
+
+##### JAR
+
+- JAR로 패키징하여 배포하는 것이 스프링 부트의 중요한 특징 중에 하나.
+- `mvn package -Dskiptests` test돌리는 것을 스킵하고 패키징을 함. 
+  - 왜 스킵?
+  - 테스트를 하면 패키징하는데 오래 걸리므로.
+
+- 패키징을 하면, 개발자가 만든 `class`는 들어갔을 것이지만.. 수많은 의존성들도 담긴걸까?
+  - ㅇㅇ 다들어있네
+- BOOT-INF / lib에 의존성들이 담겨있음.
+- 하나의 jar에다가 모든 의존성(jar) + 내 클래스들이 들어있고,
+  - JarFile를 읽는 기능, JarLauncher를 이용해서 실행함.
+  - 이러한 기능이 스프링부트에 내장되어있음.
+- 왜? 독립적인 애플리케이션을 만들기 위해서.
+
+
+
+
+
+##### 원리 정리
+
+- Springboot-Starter : 의존성을 관리하는 방법
+  - Springboot-starter-parent
+    - Springboot-dependency-management
+- Springboot 2단계로 bean을 나눠서 읽는다.
+  1. component scan
+  2. enableAutoConfiguration
+- 스프링부트는 서버가 아니다.
