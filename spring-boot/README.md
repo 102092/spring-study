@@ -59,5 +59,59 @@
     - 여러개면 `@order()`를 줄 수 있음
       - 숫자가 낮은 것이 높은것 1등이 먼저들어온다.
 - CommandLiner
+  
   - JVM option은 아예 신경쓰지 않는다.
 
+
+
+## 외부 설정 
+
+### 1부
+
+- `application.properties`  
+
+  - 스프링부트 규약, 컨벤션
+
+  - key, value 값
+
+- *<u>프로퍼티 우선순위</u>*
+  1. 유저 홈 디렉토리에 있는 spring-boot-dev-tools.properties
+  2. 테스트에 있는 @TestPropertySource
+  3. @SpringBootTest 애노테이션의 properties 애트리뷰트
+  4. 커맨드 라인 아규먼트
+  5. SPRING_APPLICATION_JSON (환경 변수 또는 시스템 프로티) 에 들어있는 프로퍼티
+  6. ServletConfig 파라미터
+  7. ServletContext 파라미터
+  8. java:comp/env JNDI 애트리뷰트
+  9. System.getProperties() 자바 시스템 프로퍼티
+  10. OS 환경 변수
+  11. RandomValuePropertySource
+  12. JAR 밖에 있는 특정 프로파일용 application properties
+  13. JAR 안에 있는 특정 프로파일용 application properties
+  14. JAR 밖에 있는 application properties
+  15. JAR 안에 있는 application properties
+  16. @PropertySource
+  17. 기본 프로퍼티 (SpringApplication.setDefaultProperties)
+
+- 프로퍼티 기억해야할 추가 기능들
+
+  - **랜덤값 설정하기**
+    - ${random.*}
+  - **플레이스 홀더**
+    - name = keesun
+    - fullName = ${name} baik
+
+- java -jar target/han-0.0.1-SNAPSHOT.jar --han.name=kimdonghwan
+
+  - = 부분 띄어쓰기 하면 안됨.
+
+- `mvn clean package -DskipTests`
+
+  - 테스트를 돌리지 않고 빌드.
+  - 그렇지만 업무에서 실행하는 패키지는 반드시 테스트를 돌리고 빌드해야함
+
+  
+
+- 테스트 용도 application.properties 를 생성함.
+  - 첫번째 빌드할때 main 폴더에 있는 것이 컴파일 되어서 클래스패스에 들어가게 되고,
+  - 그리고 테스트 코드 폴더가 컴파일되어서 클래스패스에 들어가므로, 테스트 폴더/리소스 폴더 아래 있는 application.properties로 최종 override됨.

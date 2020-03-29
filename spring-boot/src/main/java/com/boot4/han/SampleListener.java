@@ -1,17 +1,21 @@
 package com.boot4.han;
 
-import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SampleListener implements CommandLineRunner {
+public class SampleListener implements ApplicationRunner {
+
+  @Value("${han.name}")
+  private String name;
 
   @Override
-  public void run(String... args) throws Exception {
-    Arrays.stream(args).forEach(System.out::println);
+  public void run(ApplicationArguments args) {
+    System.out.println("==============");
+    System.out.println(name);
+    System.out.println("==============");
 
   }
 }
