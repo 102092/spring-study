@@ -115,3 +115,24 @@
 - 테스트 용도 application.properties 를 생성함.
   - 첫번째 빌드할때 main 폴더에 있는 것이 컴파일 되어서 클래스패스에 들어가게 되고,
   - 그리고 테스트 코드 폴더가 컴파일되어서 클래스패스에 들어가므로, 테스트 폴더/리소스 폴더 아래 있는 application.properties로 최종 override됨.
+
+
+
+### 2부
+
+- @ConfigurationProperties를 사용해서 쓰면 좋다.
+  - 클래스와 properties의 맵핑
+  - 내부 변수들도 좀 더 유연하게 mapping 되고.
+  - @value보다 좀 더 좋음.
+- @Value는 SpEL을 사용할 수 있음.
+
+- Third part configuration
+
+- 왠만한 서버 프로퍼티는 스프링부터에서 주입받아서 사용할 수 있음.
+- 융통성 있는 바인딩
+  - camel case, underbar로 적어도, 즉 조금 컨벤션이 틀려도, 스프링부트가 알아서 맵핑해준다.
+- 기본적인 converting이 됨.
+  - 즉 application.properties에서 적는 100 값은 기본적으로 string이지만, int 값으로 주입될 수 있음.
+- `@Validated`
+  - JSR-303의 구현체
+  - `@Not Empty`같은 어노테이션을 사용할 수 있음.
