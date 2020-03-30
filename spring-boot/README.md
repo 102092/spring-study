@@ -136,3 +136,16 @@
 - `@Validated`
   - JSR-303의 구현체
   - `@Not Empty`같은 어노테이션을 사용할 수 있음.
+
+
+
+### 프로파일
+
+- @Profile
+  - 특정한 bean만 등록하고 싶을 때
+- properties에다가, 활성하려는 profiles 명을 명명할 수 있음.
+  - `spring.profiles.active = 프로파일명`
+- java -jar 입력하는 것 귀찮당..
+  - java -jav target/....jar --spring.profiles.active
+- 프로파일 값을 세팅하고 싶을 때, program argument에다가 셋팅을 해주면 됨.
+  - `--spring.profile.active = ....`
