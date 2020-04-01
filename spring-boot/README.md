@@ -139,7 +139,7 @@
 
 
 
-### 프로파일
+## 프로파일
 
 - @Profile
   - 특정한 bean만 등록하고 싶을 때
@@ -149,3 +149,48 @@
   - java -jav target/....jar --spring.profiles.active
 - 프로파일 값을 세팅하고 싶을 때, program argument에다가 셋팅을 해주면 됨.
   - `--spring.profile.active = ....`
+
+
+
+## 로깅
+
+### 1부
+
+- 로깅 퍼사드(Commons Logging, SLF4j)를 통해서 로거를 써도 별 문제 없음. 꼭 필요는 없다.
+  - 장점? 로깅 퍼사드 밑에 있는 로거(JUL, Log4J2, Logback)들을 바꿔서 낄 수 있음.
+  - 즉 확장성을 보장할 수 있음.
+- 스프링 부트는 Commons Logging을 사용한다.
+  - SLF4j를 사용해도 상관 없음.
+- 어쨋든 최종적으로는 `Logback`을 쓰는 것.
+- 처음 스프링부트를 실행했을때 나오는 Log는 Logback이 찍는 것.
+- spring.output.ansi.enabled=always .. 보기 좋다
+- logging.file, logging.path.. 파일 출력하는 것.
+- 회사는 사내 로그 시스템이 있음.
+
+
+
+### 2부
+
+- 커스텀한 로그 설정
+
+- logback-spring.xml 파일 정의를 통해서, logback을 설정할 수 있음.
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <configuration>
+      <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+      <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+      <root level="INFO">
+          <appender-ref ref="CONSOLE" />
+      </root>
+      <logger name="org.springframework.web" level="DEBUG"/>
+  </configuration>
+  ```
+
+- 기본적인 로그 설정
+
+- 로거를 Log4J2로 바꾸는 방법
+
+  - 톰캣을 undertow로 바꾸는 것과 똑같음.
+  - web package에 따라 들어오는 Logging을 빼고
+  - starter-log4j2로
