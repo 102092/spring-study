@@ -194,3 +194,43 @@
   - 톰캣을 undertow로 바꾸는 것과 똑같음.
   - web package에 따라 들어오는 Logging을 빼고
   - starter-log4j2로
+
+
+
+### 테스트
+
+- `spring-boot-starter-test` 
+  - 의존성에 추가하면
+  - 여러개가 들어온다!
+  - 테스트 코드 작성하는데 있어서, 따로 필요한게 없다!
+
+- `@MockBean`
+  - bean은 가짜로 등록한다.
+  - test를 위한 bean을 의미하는 듯.
+- `WebTestClient`
+  - 비동기적으로 요청을 보낼 수 있음.
+  - 좀 더 웹 테스트에 알맞는 api인듯함.
+  - springboot starter webflux.. 좋은듯?
+  - rest 한 call 이라면 이게 더 이득인듯.
+
+- `@SpringbootTest`
+  - 어마어마한 크기의 테스트 작업임.
+  - 즉 수많은 bean들이 등록되고,
+  - 그중 mockbean에 해당하는 bean만 교체되는 방식임.
+  - 그래서 너무 크니까, 일부분만 테스트도 돌릴 수 있음.
+  - sliceTest방식
+
+- `@WebMvcTest` 
+  - 콘트롤러 하나만 테스트 하는 것.
+  - web에 해당하는 부분만 bean으로 등록됨.
+  - 일반적인 component들은 bean으로 등록되지 않음.
+  - 그래서 사용하는 bean들이 있다면 mockbean을 등록해야함.
+- 스프링 부트가 제공하는 유틸리티
+  - OutputCapture
+    - 로그를 비롯한 콘솔에 찍히는 내용들을 모두 캡처한다.
+    - springboot 2.2.5 지금은 deprecated 된듯함.
+
+
+
+
+
