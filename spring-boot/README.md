@@ -197,7 +197,7 @@
 
 
 
-### 테스트
+## 테스트
 
 - `spring-boot-starter-test` 
   - 의존성에 추가하면
@@ -234,3 +234,25 @@
 
 
 
+## Dev-tools
+
+- Restart 기능이 있음.
+- 클래스를 바꾸면, Tomact을 껐다 키는 속도보다는 빠르다.
+  - 왜?
+  - Spring boot class loader를 두가지 사용함.
+  - base, restart class loader
+- 브라우저까지 같이 바꿔주는 것은 LiveReload.
+  - chrome plugin이 있어야함.
+- ~/.spring-dev-tools.properties : 1순위 우선순위
+
+- Remote Application
+  - 원격 파일이 바뀌면, 로컬도 바뀌도록..?
+  - 위험함.
+  - 운영용이 아니고, 개발용
+  - 가급적으로는 사용하지 않는게 좋음.
+
+
+
+## MVC 소개
+
+- 
