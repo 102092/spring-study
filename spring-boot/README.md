@@ -253,6 +253,69 @@
 
 
 
-## MVC 소개
+## MVC
 
-- 
+### 1부
+
+```java
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.web.servlet.MockMvc;
+
+@WebMvcTest(UserController.class)
+public class UserControllerTest {
+
+  @Autowired
+  MockMvc mockMvc;
+
+  @Test
+  void hello() throws Exception {
+    mockMvc.perform(get("/hello"))
+        .andExpect(status().isOk())
+        .andExpect(content().string("hello"));
+  }
+
+}
+
+```
+
+- Spring web mvc를 바로 사용할 수 있는 이유는, 자동 설정 파일이 있기 때문이고, 이것이 적용이 되었기 때문에.
+- bean이 없는 경우에 ~ 해당 bean을 등록할 수 있는 기능이 있음.
+
+
+
+- 추가적인 설정 파일을 만들고 싶다?
+
+```java
+package com.boot4.han;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+}
+```
+
+- 필요한 기능들을 Override해서 구현하면 됨.
+
+
+
+### 2부 HttpMessageConverters
+
+- HTTP 요청을 객체로 변경하거나, 객체를 HTTP 응답 본문으로 변경할때 사용한다.
+  - 즉 스프링이 *알아서* Conversion을 해준다. 
+- Composition 타입
+  - 해당 객체 안에, 여러개의 값이 들어가있는 경우
+  - 이 타입인 경우 기본적으로 `Json` 으로 반환된다.
+- `@RestController` 이 있으면 `@Response body` 를 생략해도 됨.
+- 그냥 `@Controller` 이면 반환되는 String은 `viewNameResolver` 통해서 해당 String에 맞는 view를 찾아가게 됨.
+
+
+
