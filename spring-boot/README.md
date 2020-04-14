@@ -319,3 +319,77 @@ public class WebConfig implements WebMvcConfigurer {
 
 
 
+### 3부 ViewResolve
+
+- 들어오는 요청의 `accept-header` 에 따라 응답이 달라짐
+
+- 경우에 따라서는 `accpet-header` 을 제공하지 않는 경우도 있다.
+  - 그럴경우 URL path에 `format ` 이라는 param으로 판단했음.
+  - 그렇지만 이제 지원하지 않는다.
+
+- 406에러
+
+  - mediaTypeNotAcceptableException
+  - 미디어 타입을 처리할, HTTP message convertor가 없는 경우
+  
+- 성공하면 로그를 안보여준다.
+
+- XML로 응답을 보내려면 의존성을 추가해줘야한다.
+
+  ```xml
+  <dependency>
+     <groupId>com.fasterxml.jackson.dataformat</groupId>
+     <artifactId>jackson-dataformat-xml</artifactId>
+     <version>2.9.6</version>
+  </dependency>
+  ```
+
+
+
+### 4부 정적 리소스 지원
+
+- 동적으로 생성하지 않는 자원.
+- 클라이언트 요청에 따라서, `view` 를 만들어서 보내는 자원들을 일컫는다.
+- 304 응답
+  - 서버에서 리소스를 다시 보내진 않음
+  - 왜? Last modified date가 변경되지 않았기 때문에
+
+- 기본적으로 resource들을 root 맵핑 ("/")
+
+- WebMvcConfigurer의 addRersourceHandlers
+
+  ```java
+  package com.boot4.han.config;
+  
+  import org.springframework.context.annotation.Configuration;
+  import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+  import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+  
+  @Configuration
+  public class WebConfig implements WebMvcConfigurer {
+  
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+      registry.addResourceHandler("/m/**")
+          .addResourceLocations("classpath:/m/")
+        //반드시 / 로 끝나야한다.
+          .setCachePeriod(20);
+    }
+  }
+  
+  ```
+
+
+
+### 5부 웹 jar
+
+- Reactive , Augular.. 등등 jar파일로 추가할 수 있다.
+- maven 중앙 저장소에도 검색할 수 있다.
+- 버젼 업이 되면, 매번 바꿔줘야하므로, `webjars-locator-core` 의존성을 통해, 버젼을 생략하고 사용할 수 있다.
+
+- resource chaining , 키워드를 검색해보고 공부해보기
+
+
+
+
+

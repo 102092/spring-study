@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,18 @@ public class UserControllerTest {
         .content(userJson))
         .andExpect(jsonPath("$.username", Matchers.is(Matchers.equalTo("han"))))
         .andExpect(jsonPath("$.password", Matchers.is(Matchers.equalTo("1234"))));
-
   }
+  @Test
+  void createUser_XML() throws Exception {
+    String userJson = "{\"username\":\"han\", \"password\":\"1234\"}";
+    mockMvc.perform(post("/users/create")
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_XML)
+        .content(userJson))
+        .andExpect(status().isOk())
+        .andExpect(xpath("/User/username").string("han"))
+        .andExpect(xpath("/User/password").string("1234"));
+  }
+
 
 }
