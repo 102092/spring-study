@@ -387,9 +387,20 @@ public class WebConfig implements WebMvcConfigurer {
 - maven 중앙 저장소에도 검색할 수 있다.
 - 버젼 업이 되면, 매번 바꿔줘야하므로, `webjars-locator-core` 의존성을 통해, 버젼을 생략하고 사용할 수 있다.
 
-- resource chaining , 키워드를 검색해보고 공부해보기
+- `resource chaining` , 키워드를 검색해보고 공부해보기
 
 
 
+### 6부 index 페이지, favicon
 
+- [favicon.io](https://favicon.io) : 파비콘 만드는 사이트 참고하자
+- 웰컴페이지는 기본적으로 `Index.html` 을 classpath:static 폴더 아래서 찾는다.
+
+- 잘 안되면, 열심히 검색해보자....
+
+
+
+### 7부 Thymeleaf
+
+- 
 
