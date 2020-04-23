@@ -402,5 +402,35 @@ public class WebConfig implements WebMvcConfigurer {
 
 ### 7부 Thymeleaf
 
+- Template 엔진은 주로 view를 만들 때 사용.
+
+- **스프링 부트가 자동 설정을 지원하는 템플릿 엔진**, 동적 템플릿 엔진
+
+  - FreeMarker
+
+  - Groovy
+  - **Thymeleaf**
+  - Mustache
+
+- JSP를 지원하지는 않음.
+  - 왜?
+  - jar 패키지 못함, war 패키징 해야함.
+  - `undertow` servlet엔진 사용하지 못함.. jsp자체를 아예 지원하지 않음.
+
+- Mocmvc는 실제 servlet을 띄우는 것은 아님. 가짜임!
+- 타임리프는 서블릿 컨테이너에 독립적인 엔진.
+- https://www.thymeleaf.org/doc/articles/standarddialect5minutes.html
+  - 5분안에 절대 다 볼 수 없는 문서..
+
+
+
+### 8부 HtmlUnit
+
+- scope 이 test
+  - 즉 테스트 할때만 사용된다.
+- html을 단위 테스트 하기 위한 툴
+- http://htmlunit.sourceforge.net/gettingStarted.html
+  - 참고예제
+- html도 xml중 하나.
 - 
 
