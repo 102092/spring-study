@@ -457,4 +457,19 @@ public class WebConfig implements WebMvcConfigurer {
 - 그렇지만 Github API에서는 사용중.
 - HATEOAS에는 `Resource` 라는 클래스 있음.
   - 여기서 링크를 추가할 수 있음.
-- 
+
+
+
+### 11부 CORS
+
+- Single-Origin-Policy
+  - 기본
+  - 오리진이 다른 경우에 자원 호출 못함
+- 오리진?
+  - URL 스키마(http,https), hostname(localhost..), 포드(8080,,)
+- Cross-Origin Resource Sharing
+- `@CrossOrigin` 으로 해당 Method에서 다른 오리진에 대한 요청을 허용할 수 있음.
+
+- 혹은 `WebConfig` 설정파일을 만들어서 따로 관리할 수도 있음.
+  - 글로벌할 설정
+  - 
