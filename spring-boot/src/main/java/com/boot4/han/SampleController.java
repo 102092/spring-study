@@ -1,25 +1,24 @@
 package com.boot4.han;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Controller
+import org.springframework.hateoas.EntityModel;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
 public class SampleController {
 
-
   @GetMapping("/hello")
-  public String hello() {
-    throw new SampleException();
+  public EntityModel<Hello> hello() {
+    Hello hello = new Hello();
+    hello.setPrefix("hey,");
+    hello.setName("light,");
+
+    EntityModel<Hello> helloEntityModel = new EntityModel<>(hello);
+    helloEntityModel.add(linkTo(methodOn(SampleController.class).hello()).withSelfRel());
+    return helloEntityModel;
   }
 
-  @ExceptionHandler(SampleException.class)
-  public @ResponseBody
-  AppError sampleError(SampleException e) {
-    AppError appError = new AppError();
-    appError.setMessage("error.app.key");
-    appError.setReason("나도 모름");
-    return appError;
-  }
 }

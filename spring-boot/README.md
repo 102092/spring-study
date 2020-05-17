@@ -440,4 +440,21 @@ public class WebConfig implements WebMvcConfigurer {
 - 스프링부트에서 제공하는 기본 에러 핸들러는 `HTML` 과 `Json`  으로 제공된다.
 - @ControllerAdvice를 붙이면, 여러 핸들러에서 발생하는 에러를 ExceptionHandler에서 처리할 수 있게 됨.
 - 커스텀 에러 페이지
-  - 
+
+
+
+###  10부 HATEOAS
+
+- REST API를 만들 때, Resource에 대한 정보를 제공할 때, 연관이 되어있는 링크정보들까지 같이 제공하고,
+- 클라이언트는 같이 제공이 된 링크정보를 바탕으로 리소스에 접근하는 것.
+- ex) Root에 대해서 알려줄때는.. self는 나, 여기의 링크 정보는 `/`
+- 자세히 알고 싶으면..
+  - https://spring.io/understanding/HATEOAS
+  - https://spring.io/guides/gs/rest-hateoas/
+  - https://docs.spring.io/spring-hateoas/docs/current/reference/html/
+- 리소스와 연관이 있는 링크까지 제공해주는 것.
+- 널리 사용되고 있진 않음.
+- 그렇지만 Github API에서는 사용중.
+- HATEOAS에는 `Resource` 라는 클래스 있음.
+  - 여기서 링크를 추가할 수 있음.
+- 
