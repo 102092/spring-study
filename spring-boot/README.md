@@ -432,5 +432,12 @@ public class WebConfig implements WebMvcConfigurer {
 - http://htmlunit.sourceforge.net/gettingStarted.html
   - 참고예제
 - html도 xml중 하나.
-- 
 
+
+
+### 9부 ExceptionHandler
+
+- 스프링부트에서 제공하는 기본 에러 핸들러는 `HTML` 과 `Json`  으로 제공된다.
+- @ControllerAdvice를 붙이면, 여러 핸들러에서 발생하는 에러를 ExceptionHandler에서 처리할 수 있게 됨.
+- 커스텀 에러 페이지
+  - 
