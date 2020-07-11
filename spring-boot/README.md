@@ -330,3 +330,23 @@ mongo
 ## @DataMongoTest
 
 - slicingTest
+
+
+
+# 11부 Neo4j
+
+- 링크타서 찾는 경우 유리한 DB
+  - 다시 말해 노드간의 연관관계를 영속화?? 하는데 유리한 그래프 데이터베이스!
+- 하위 호환성이 전혀 좋지않다.
+  - 별로임
+- 
+
+
+
+## 설치 및 실행
+
+```
+docker run -p 7474:7474 -p 7687:7687 -d --name noe4j_boot neo4j
+http://localhost:7474/browser
+```
+

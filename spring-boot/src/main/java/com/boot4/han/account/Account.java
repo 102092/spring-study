@@ -1,23 +1,31 @@
 package com.boot4.han.account;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.HashSet;
+import java.util.Set;
+import org.neo4j.ogm.annotation.GeneratedValue;
+import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
-@Document(collection = "accounts")
+@NodeEntity
 public class Account {
 
   @Id
-  private String id;
+  @GeneratedValue
+  private Long id;
 
   private String username;
 
   private String email;
 
-  public String getId() {
+  @Relationship(type = "has")
+  private Set<Role> roles = new HashSet<>();
+
+  public Long getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -35,5 +43,13 @@ public class Account {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public Set<Role> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
   }
 }
