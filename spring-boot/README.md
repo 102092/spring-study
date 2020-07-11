@@ -185,3 +185,58 @@ SELECT * FROM account;
 
 - nativeQuery 옵션을 줘서 사용할 수도 있고
 - 기본값은 JPQL이다
+
+
+
+# 7부 데이터베이스 초기화
+
+## JPA
+
+- spring.jpa.hibernate.ddl-auto
+
+  - create : 초반에 새로 생성(데이터 유지 안됨, 운영상황에서 절대 이옵션 아용하면 안됨)
+
+  - create-drop : 생성-삭제(데이터 유지 안됨)
+
+  - update : 기본 스키마 나두고, 추가된 것만 변경
+
+    - 개발할때 많이 사용하는 옵션
+
+  - validate : 검증하는! ddl에 변경을 가하진 않음
+
+    ```properties
+    spring.jpa.hibernate.ddl-auto=validate
+    spring.jpa.generate-ddl=false
+    ```
+
+    - 이 옵션이 운영 상황에서는 훨씬 안정적이다.
+
+- spring.jpa.generate-ddl = true
+  - 자동으로 스키마 생성됨
+
+- `Schema-validation: missing column [email] in table [account]`
+  - validate 옵션에서 어떤 컬럼을 매칭할 수 없을 때 발생하는 오류
+
+- update
+
+  - `Hibernate: alter table if exists account add column email varchar(255)`
+  - 컬럼명이 변경된 것 같은 경우 인식하지 못한다.
+  - 컬럼이 새로 생성, 삭제된것만 알 수 있음.
+
+- 테스트에서 사용하려면
+
+  ```properties
+  #spring.jpa.hibernate.ddl-auto=validate
+  #spring.jpa.generate-ddl=false
+  ```
+
+  - 이 옵션이 없어야 할듯
+
+
+
+## SQL 스크립트
+
+- schema.sql 또는 schema-${platform}.sql
+
+- data.sql 또는 data-${platform}.sql
+- ${platform} 값은 spring.datasource.platform 으로 설정 가능.
