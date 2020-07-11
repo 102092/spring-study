@@ -245,8 +245,6 @@ SELECT * FROM account;
 
 # 8부 데이터베이스 마이그레이션
 
-
-
 ## flyway
 
 - DB 변경도 버전관리하듯이 관리할 수 있다
@@ -275,3 +273,37 @@ SELECT * FROM account;
 
 
 
+# 9부 Redis
+
+- NoSQL
+- 기본 포트는 6379포트
+- 레디스...
+
+
+
+## 설치 및 실행
+
+```
+docker run -p 6379:6379 --name redis_boot -d redis
+docker exec -i -t redis_boot redis-cli
+```
+
+- -d : demon
+- -i : interactive
+- -t : target
+
+
+
+## 주요 커맨드
+
+- keys *
+- get {key}
+- hgetall {key}
+- hget {key} {column}
+
+## 참고
+
+- https://projects.spring.io/spring-data-redis/
+  - StringRedisTemplate 또는 RedisTemplate
+  - extends CrudRepository
+- https://redis.io/commands
