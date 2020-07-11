@@ -1,4 +1,4 @@
-# 2부 : 인메모리 데이터베이스
+# 2부 인메모리 데이터베이스
 
 - `h2database`
 
@@ -44,9 +44,9 @@ public class H2Runner implements ApplicationRunner {
 
 
 
-## 3부 MySql
+# 3부 MySql
 
-### DBCP
+## DBCP
 
 - 스프링부트가 제공하는 데이터베이스와 연결에 필요한 커넥션 풀
 - 미리 커넥션 풀을 만들어놓고, 커넥션이 필요할 때마다 이 풀에서 가져오는 작업임.
@@ -65,14 +65,14 @@ spring.datasource.dbcp2.*
 
 
 
-### HikariCP
+## HikariCP
 
 - 스프링 부트가 기본적으로 선택한 DBCP
 - 기본적인 Timeout 설정은 30초
 
 
 
-### MySQL
+## MySQL
 
 ```xml
 <dependency>
@@ -89,7 +89,7 @@ spring.datasource.dbcp2.*
 
 
 
-### docker
+## docker
 
 - 컨테이너
 - 커널을 공유하기 때문에, 설치를 빠르게 할 수 있다.
@@ -98,3 +98,27 @@ spring.datasource.dbcp2.*
 
 - mariaDB 커뮤니티 버젼 사용시, 소스코드 공개의무가 생길 수 있음.
 - 그러므로 PostgreSQL을 사용하는게 나을 수도
+
+
+
+# 4부 PostgreSQL
+
+```
+docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -e POSTGRES_USER=keesun -e POSTGRES_DB=springboot --name postgres_boot -d postgres
+
+docker exec -i -t postgres_boot bash
+
+su - postgres
+
+psql -U keesun springboot
+
+데이터베이스 조회
+\list
+
+테이블 조회
+\dt
+
+쿼리
+SELECT * FROM account;
+```
+

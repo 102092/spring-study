@@ -9,13 +9,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class H2Runner implements ApplicationRunner {
+public class PgSQLRunner implements ApplicationRunner {
 
   private final DataSource dataSource;
 
   private final JdbcTemplate jdbcTemplate;
 
-  public H2Runner(DataSource dataSource, JdbcTemplate jdbcTemplate) {
+  public PgSQLRunner(DataSource dataSource, JdbcTemplate jdbcTemplate) {
     this.dataSource = dataSource;
     this.jdbcTemplate = jdbcTemplate;
   }
@@ -23,15 +23,16 @@ public class H2Runner implements ApplicationRunner {
   @Override
   public void run(ApplicationArguments args) throws Exception {
     Connection connection = dataSource.getConnection();
+    System.out.println(connection.getMetaData().getDriverName());
     System.out.println(connection.getMetaData().getURL());
     System.out.println(connection.getMetaData().getUserName());
 
     Statement statement = connection.createStatement();
     //language=sql
-    String sql = "CREATE TABLE USER (ID INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (id)); ";
+    String sql = "CREATE TABLE account (ID INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (id)); ";
     statement.execute(sql);
 
-    jdbcTemplate.execute("INSERT INTO USER VALUES (1, 'han')");
+    jdbcTemplate.execute("INSERT INTO account VALUES (1, 'han')");
 
   }
 }
