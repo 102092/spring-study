@@ -307,3 +307,26 @@ docker exec -i -t redis_boot redis-cli
   - StringRedisTemplate 또는 RedisTemplate
   - extends CrudRepository
 - https://redis.io/commands
+
+
+
+# 10부 MongoDB
+
+- @Document(collection = "account")
+  - collection이 table 이름 정도
+
+- 내장형 몽고 DB도 있다!
+
+## 설치 및 실행
+
+```
+docker run -p 27017:27017 --name mongo_boot -d mongo
+docker exec -i -t mongo_boot bash
+mongo
+```
+
+
+
+## @DataMongoTest
+
+- slicingTest
