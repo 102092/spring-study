@@ -240,3 +240,38 @@ SELECT * FROM account;
 
 - data.sql 또는 data-${platform}.sql
 - ${platform} 값은 spring.datasource.platform 으로 설정 가능.
+
+
+
+# 8부 데이터베이스 마이그레이션
+
+
+
+## flyway
+
+- DB 변경도 버전관리하듯이 관리할 수 있다
+
+- 도커는 컨테이너가 사라지만 데이터가 날아간다
+- **한번 적용된 스크립트 파일은 절대 건드리면 안된다.** 
+  - 어떠한 파일이던지 새로 만들어서 적용해야한다.
+- 데이터 조작도 가능하다
+
+
+
+## flyway-디렉토리
+
+- db/migration 또는 db/migration/{vendor}
+- spring.flyway.locations로 변경 가능
+
+
+
+## flyway-파일 이름
+
+- V숫자__이름.sql
+- V는 꼭 대문자로.
+- 숫자는 순차적으로 (타임스탬프 권장)
+- 숫자와 이름 사이에 언더바 **두 개**.
+- 이름은 가능한 서술적으로.
+
+
+
