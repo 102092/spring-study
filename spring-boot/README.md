@@ -122,3 +122,66 @@ psql -U keesun springboot
 SELECT * FROM account;
 ```
 
+
+
+# 5부 Spring data JPA 개요
+
+## ORM
+
+- 객체와 관계(DB)를 맵핑할 때 발생하는 개념적인 불일치를 어떻게 해결할 것인가에 대한 해결책을 제공하는 **프레임워크** 
+- 개념적인 불일치?
+  - 객체는 크기가 굉장히 다양함
+  - 그에 반해 테이블은 크기가 굉장히 한정적이다.
+  - 그럼 어떻게 복잡한 객체를 테이블에 매칭시킬 수 있을 것인가?
+  - 그리고 테이블은 상속이 없는데, 객체는 상속이 있다! 이 부분을 어떻게 구현할 것인가?
+
+
+
+## JPA
+
+- Java Persistence API
+
+- 대부분의 JPA spec이 Hibernate를 기반으로 만들어져있음.
+- ORM을 위한 자바 (EE) 표준을 의미
+
+
+
+## Spring data jpa
+
+- JPA 표준 스펙을 아주 쉽게 사용할 수 있게끔, Spring data 로 추상화 시켜놓은 것.
+- JPA 구현체인 Hibernate를 사용해서
+- JPA는 EntityManager로 감싸서 사용하게 됨.
+
+- Spring data JPA -> JPA -> Hibernate -> Datasource
+  - Jdbc 를 사용할 수도 있으면서
+  - 추가적으로 Hibernate..등에서 제공하는 기능들도 사용할 수 있다는 장점이 있음!
+
+
+
+# 6부 Spring data JPA 사용
+
+## @DataJpaTest
+
+- **SlicingTest**
+- 이 테스트를 진행할 때는 반드시 인메모리 데이터베이스가 필요하다.
+
+- 인메모리 DB가 아닌 데이터베이스를 사용하는 경우에는 URL을 명시해줘야한다.
+
+
+
+## @SpiringBootTest
+
+- 통합 테스트
+- 왜? 
+  - 스프링 부트에 있는 모든 annotation이 다 등록된다.
+  - 모든 빈설정을 다한다
+
+- 권장되진 않는다.
+  - 테스트를 돌릴 때는 embbedd db로 돌리는게 훨씬 빠르다.
+
+
+
+## @Query
+
+- nativeQuery 옵션을 줘서 사용할 수도 있고
+- 기본값은 JPQL이다
