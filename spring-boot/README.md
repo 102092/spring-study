@@ -363,7 +363,7 @@ http://localhost:7474/browser
 
 
 
-# 스프링 시큐리티 1부
+# 시큐리티 1부
 
 - 401 : unauthorized
 
@@ -420,4 +420,9 @@ http://localhost:7474/browser
   ```
 
   - `@WithMockUser`
-  - 
+
+
+
+# 시큐리티 2부
+
+- starter-security를 사용하면 기본적으로 모든 요청에 인증을 요구한다
