@@ -212,11 +212,13 @@ SELECT * FROM account;
     - 이 옵션이 운영 상황에서는 훨씬 안정적이다.
 
 - spring.jpa.generate-ddl = true
-  - 자동으로 스키마 생성됨
-
+  
+- 자동으로 스키마 생성됨
+  
 - `Schema-validation: missing column [email] in table [account]`
-  - validate 옵션에서 어떤 컬럼을 매칭할 수 없을 때 발생하는 오류
-
+  
+- validate 옵션에서 어떤 컬럼을 매칭할 수 없을 때 발생하는 오류
+  
 - update
 
   - `Hibernate: alter table if exists account add column email varchar(255)`
@@ -339,7 +341,6 @@ mongo
   - 다시 말해 노드간의 연관관계를 영속화?? 하는데 유리한 그래프 데이터베이스!
 - 하위 호환성이 전혀 좋지않다.
   - 별로임
-- 
 
 
 
@@ -350,3 +351,73 @@ docker run -p 7474:7474 -p 7687:7687 -d --name noe4j_boot neo4j
 http://localhost:7474/browser
 ```
 
+
+
+# 12부 정리
+
+- HikariCP : Datasource Pool
+- spring.jpa.generate-ddl = false로 바꿔줘야, ddl auto option이 적용이 된다.
+- open-session-view : view를 랜더링하는 것과 관련이 있음
+  - spring web mvc에서 view를 랜더링하는 과정이 있음.
+  - 기본적으로는 true option
+
+
+
+# 스프링 시큐리티 1부
+
+- 401 : unauthorized
+
+- spring security를 추가하면, 모든 요청에서 인증이 필요하게 된다.
+
+- 이 요청이 원하는 응답의 형태 (accept header)에 따라 ....
+
+  - 기본 accept header가 text
+
+  ```java
+    @Test
+    void hello() throws Exception {
+      mockMvc.perform(get("/hello")
+          .accept(MediaType.TEXT_HTML)) //요청을 보낼때 설정된 accept header
+          .andDo(print())
+          .andExpect(status().isOk())
+          .andExpect(view().name("hello"));
+    }
+  
+    @Test
+    void my() throws Exception {
+      mockMvc.perform(get("/my"))
+          .andDo(print())
+          .andExpect(status().isOk())
+          .andExpect(view().name("my"));
+    }
+  ```
+
+  - `hello()`는 응답이 302 , redirect해서 spring security에서 제공해주는login page로 보내고 있다
+  - `my()` Basic Authenticate header가 응답에 담겨져서 오고 있음
+
+- security에서 자동 제공하는 user / password 있음
+  - `Using generated security password: e69b6e40-ea6a-4aa7-9068-a060fa448d53`
+- Spring Security starter가 등록되었을 때, 추가되는 의존성
+  - Event Publisher
+- 시큐리티 유저 관련된 설정 --> `UserDetailsServiceAutoConfiguration`
+  - InMemory에 유저 하나를 만들어줌.
+- 시큐리티 관련 기본 설정 --> `WebSecurityConfigurerAdapter`
+- 스프링 부트에서 제공하는 시큐리티 starter는 진짜로 쓸 필요가 없어진다.
+
+
+
+- sping-security-test
+
+  ```xml
+  
+  <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <version>5.2.4.RELEASE</version>
+      <scope>test</scope>
+  </dependency>
+  
+  ```
+
+  - `@WithMockUser`
+  - 
