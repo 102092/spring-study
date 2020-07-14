@@ -426,3 +426,8 @@ http://localhost:7474/browser
 # 시큐리티 2부
 
 - starter-security를 사용하면 기본적으로 모든 요청에 인증을 요구한다
+- `UserDetailsService` 를 직접 구현해야한다.
+- `java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"`
+  - 다양한 passwordEncoder가 있음.
+  - Encoding을 하지 않고 패스워드를 저장하면, 심각한 보안이슈가 발생할 수 있음.
+- 
