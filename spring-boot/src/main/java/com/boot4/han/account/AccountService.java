@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,15 +17,19 @@ public class AccountService implements UserDetailsService {
 
   private final AccountRepository accountRepository;
 
+  private final PasswordEncoder passwordEncoder;
+
   public AccountService(
-      AccountRepository accountRepository) {
+      AccountRepository accountRepository,
+      PasswordEncoder passwordEncoder) {
     this.accountRepository = accountRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   public Account createAccount(String username, String password) {
     Account account = new Account();
     account.setUsername(username);
-    account.setPassword(password);
+    account.setPassword(passwordEncoder.encode(password));
     return accountRepository.save(account);
   }
 

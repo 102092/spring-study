@@ -18,6 +18,6 @@ public class AccountRunner implements ApplicationRunner {
   @Override
   public void run(ApplicationArguments args) throws Exception {
     Account han = accountService.createAccount("han", "1234");
-    System.out.println(han.getUsername() + "password : "+ han.getPassword());
+    System.out.println(han.getUsername() + " password : "+ han.getPassword());
   }
 }

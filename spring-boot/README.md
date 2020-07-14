@@ -430,4 +430,5 @@ http://localhost:7474/browser
 - `java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"`
   - 다양한 passwordEncoder가 있음.
   - Encoding을 하지 않고 패스워드를 저장하면, 심각한 보안이슈가 발생할 수 있음.
-- 
+- `PasswordEncoder`
+  - `han password : {bcrypt}$2a$10$6RZzv8R7qz6cg/OB4.p1DeN4mJLgfTN4saM9xfEDwWGOVSDUUrqMm`
