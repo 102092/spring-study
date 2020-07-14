@@ -60,3 +60,44 @@
   ```
 
   
+
+
+
+# 3부
+
+- Spring boot Admin : 제 3자가 제공하는 오픈소스 프로젝트
+
+  - actuator 정보를 ui에서 확인할 수 있는.
+
+- spring boot version과 의존성 버젼을 잘 확인해야할듯
+
+- 서버 설정
+
+  ```java
+  <dependency>
+    <groupId>de.codecentric</groupId>
+    <artifactId>spring-boot-admin-starter-server</artifactId>
+    <version>2.0.1</version>
+  </dependency>
+  ```
+
+  - 민간한 정보들이 있을 수 있기 때문에, 보안이 필요할 듯
+  - 스프링 시큐리티를 꼭 설정해줘야 함
+  - 특정 url 밑으로는, 특정 권한만 가진 유저만 보도록
+
+
+
+
+
+- client 설정
+
+  ```
+  <dependency>
+    <groupId>de.codecentric</groupId>
+    <artifactId>spring-boot-admin-starter-client</artifactId>
+    <version>2.0.1</version>
+  </dependency>
+  ```
+
+  
+
