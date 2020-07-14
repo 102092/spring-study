@@ -38,3 +38,25 @@
 ## 참고
 
 - https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-endpoints 
+
+# 2부
+
+- `jconsole` 입력
+
+  - JMX 실행됨. Java Monitoring , Management Console
+
+- Endpoint가 좀 더 많다
+
+- `jvisualvm`
+
+  - 다운받아서 실행해야함
+  - 플러그인 지원되는 것이 있어서,`jconsole` 보다 보기 좋을 때 있음.
+
+- 웹에서 보고 싶을 때
+
+  ```properties
+  management.endpoints.web.exposure.include=*
+  management.endpoints.web.exposure.exclude=env,beans
+  ```
+
+  
